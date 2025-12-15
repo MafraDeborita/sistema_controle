@@ -338,7 +338,7 @@ with tab1:
             st.plotly_chart(fig_pizza, use_container_width=True)
 
         with col_right:
-            st.subheader("📊 Gráfico 2.3: Comparação Valor Absoluto")
+            st.subheader("📊 Gráfico 2.1: Comparação Valor Absoluto")
 
             # -----------------------------------------
             #   GRÁFICO DE BARRA VERTICAL + LINHA DE META
@@ -399,7 +399,7 @@ with tab1:
 
         #================================================================
         
-        st.subheader("📊 Gráfico 2.1: Orçamento Aprovado vs Despesa de Aquisição e Serviço")
+        st.subheader("📊 Gráfico 2.2: Orçamento Aprovado vs Despesa de Aquisição e Serviço")
 
             # --- Preparar os dados filtrados ---
         df = orc_geral_filtrado.copy()
