@@ -343,56 +343,68 @@ with tab1:
             # -----------------------------------------
             #   GRÁFICO DE BARRA VERTICAL + LINHA DE META
             # -----------------------------------------
+            def formatar_valor_si(valor):
+                if valor >= 1_000_000_000:
+                    return f"R${valor/1_000_000_000:.1f}B"
+                elif valor >= 1_000_000:
+                    return f"R${valor/1_000_000:.1f}M"
+                elif valor >= 1_000:
+                    return f"R${valor/1_000:.1f}K"
+                else:
+                    return f"R${valor:,.0f}"
+
+
             fig_bar = go.Figure()
 
-            # Preparar os dados
+        # Preparar os dados
             df = orc_geral_filtrado.copy()
             nf_total = df['nota_fiscal_aquisicao'].sum() + df['nota_fiscal_servico'].sum()
             meta_total = df['orcamento_aprovado'].sum()
 
-            # Barra vertical: NF Total
+                # Barra vertical: NF Total
             fig_bar.add_trace(go.Bar(
-                x=['NF Total'],
-                y=[nf_total],
-                marker_color='#1E90FF',
-                name='NF Total (Aquisição + Serviço)',
-                text=[f"R${nf_total:,.0f}"],
-                textposition='outside',
-                textfont=dict(size=14),
-                width=0.5
-            ))
+                    x=['NF Total'],
+                    y=[nf_total],
+                    marker_color='#1E90FF',
+                    name='NF Total (Aquisição + Serviço)',
+                    text=[formatar_valor_si(nf_total)],
+                    textposition='outside',
+                    textfont=dict(size=14),
+                    width=0.5
+                ))
 
-            # Linha horizontal da meta (Orçamento Aprovado)
+                # Linha horizontal da meta (Orçamento Aprovado)
             fig_bar.add_hline(
-                y=meta_total,
-                line_dash="solid",  # linha sólida
-                line_color="red",
-                line_width=3,
-                annotation_text=f"Meta (Orçamento Aprovado): R${meta_total:,.0f}",
-                annotation_position="top right",
-                annotation_font_size=12,
-                annotation_font_color="red",
-                annotation_bgcolor="white",
-                annotation_bordercolor="red"
-            )
+                    y=meta_total,
+                    line_dash="solid",
+                    line_color="red",
+                    line_width=3,
+                    annotation_text=f"Meta (Orçamento Aprovado): {formatar_valor_si(meta_total)}",
+                    annotation_position="top right",
+                    annotation_font_size=12,
+                    annotation_font_color="red",
+                    annotation_bgcolor="white",
+                    annotation_bordercolor="red"
+                )
 
-            # Layout
+                # Layout
             fig_bar.update_layout(
-                title="NF Total vs Meta Geral de Orçamento Aprovado",
-                yaxis_title="Valor (R$)",
-                xaxis_title="",
-                height=400,
-                template="simple_white",
-                showlegend=True,
-                bargap=0.5,
-                margin=dict(t=50, b=50, l=50, r=50),
-                yaxis=dict(
-                    tickformat=",.0f",
-                    gridcolor='lightgray',
-                    range=[0, meta_total * 1.15]  # 15% acima da meta
-                ),
-                hovermode="x unified"
-            )
+                    title="NF Total vs Meta Geral de Orçamento Aprovado",
+                    yaxis_title="Valor (R$)",
+                    xaxis_title="",
+                    height=400,
+                    template="simple_white",
+                    showlegend=True,
+                    bargap=0.5,
+                    margin=dict(t=50, b=50, l=50, r=50),
+                    yaxis=dict(
+                        tickformat="~s",      # K, M, B automáticos
+                        ticksuffix=" R$",     # símbolo monetário
+                        gridcolor='lightgray',
+                        range=[0, meta_total * 1.15]
+                    ),
+                    hovermode="x unified"
+                )
 
             st.plotly_chart(fig_bar, use_container_width=True)
 
