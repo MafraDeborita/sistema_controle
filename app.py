@@ -632,8 +632,93 @@ with tab2:
         st.plotly_chart(fig, use_container_width=True)
 
         
-        st.markdown("---")
+        
         #==============================================================
+        st.markdown("---")
+    # ESPAÇO PARA GRÁFICO 3.1
+        st.subheader("📈 Gráfico 3.1: Aquisição Mensal por Diretoria")
+        # ===============================
+
+
+       
+
+        df_nf = data['nf_de_aquisicao'].copy()
+
+        if df_nf.empty:
+            st.warning("📝 Dados de NF de Aquisição não disponíveis")
+        else:
+            # Meses no padrão do Excel
+            meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN',
+                    'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+
+            meses_existentes = [m for m in meses if m in df_nf.columns]
+
+            if not meses_existentes:
+                st.error("❌ Colunas mensais (JAN–DEZ) não encontradas")
+            else:
+                # Aplicar filtro de diretoria (sua função)
+                df_nf = aplicar_filtros(df_nf, 'DIRETORIA', diretoria_selecionada)
+
+                # 🔄 Transformar meses em linhas
+                df_long = df_nf.melt(
+                    id_vars=['DIRETORIA'],
+                    value_vars=meses_existentes,
+                    var_name='MES',
+                    value_name='VALOR'
+                )
+
+                # Remover valores nulos
+                df_long = df_long.dropna(subset=['VALOR'])
+
+                # Ordem correta dos meses
+                ordem_meses = {mes: i for i, mes in enumerate(meses)}
+                df_long['ordem_mes'] = df_long['MES'].map(ordem_meses)
+                df_long = df_long.sort_values('ordem_mes')
+
+                # Gráfico de linha por diretoria
+                fig = px.line(
+                    df_long,
+                    x='MES',
+                    y='VALOR',
+                    color='DIRETORIA',   # 🎯 UMA LINHA POR DIRETORIA
+                    markers=True,
+                    line_shape="spline",
+                    title="Evolução Mensal dos Gastos com Aquisições",
+                    labels={
+                        'MES': 'Mês',
+                        'VALOR': 'Valor (R$)',
+                        'DIRETORIA': 'Diretoria'
+                    }
+                )
+                ordem_meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN',
+               'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+
+                fig.update_xaxes(
+                    categoryorder='array',
+                    categoryarray=ordem_meses
+                )
+
+
+                fig.update_layout(
+                    template="simple_white",
+                    height=450,
+                    hovermode="x unified",
+                    yaxis_tickformat="~s",
+                    legend_title_text="Diretorias"
+                )
+
+                fig.update_traces(
+                    line=dict(width=3, shape="spline"),
+                    marker=dict(size=7)
+                )
+
+                st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+        st.markdown("---")
+
         #==============================================================
         # ESPAÇO PARA GRÁFICO 4
         st.subheader("📊 Gráfico 4: Distribuição de Valores de NF por Classificação de Rateio")
@@ -693,62 +778,7 @@ with tab2:
 
             st.plotly_chart(fig_donut, use_container_width=True)
         #----------------------------------------------------------------
-        # ----------------- GRÁFICO TREEMAP ------------------
-
-        if "ordens_de_compra" not in data or data["ordens_de_compra"].empty:
-            st.warning("⚠ Nenhum dado disponível em 'ordens_de_compra' para gerar o gráfico.")
-        else:
-            df_rateio = data["ordens_de_compra"]
-
-            # Agrupa os valores totais por classificação
-            df_grouped = (
-                df_rateio.groupby("Nome Classif. Rateio")["Vlr. Total NF"]
-                .sum()
-                .reset_index()
-                .sort_values("Vlr. Total NF", ascending=False)
-            )
-            
-            custom_blues = [
-                "#0EE0EF",  # quadrados de baixo
-                "#176264",  # seundo quadrado
-                "#65D92B",  # azul médio
-                "#0E7E7A",  # segundo quadrado
-                "#1CE5F0"   # 1 quadrado
-            ]
-            # Criar Treemap
-            fig_treemap = px.treemap(
-                df_grouped,
-                path=["Nome Classif. Rateio"],
-                values="Vlr. Total NF",
-                color="Vlr. Total NF",
-                color_continuous_scale=custom_blues,
-                hover_data={"Vlr. Total NF": ":,.2f"},
-            )
-
-            fig_treemap.update_layout(
-                title="Distribuição dos Valores de NF por Classificação de Rateio (Treemap)",
-                height=650,
-                margin=dict(t=80, l=20, r=20, b=20),
-            )
-
-            # Formata as labels dentro dos blocos
-            fig_treemap.update_traces(
-                texttemplate="%{label}<br>R$ %{value:,.2f}",
-                textfont_size=14,
-                hovertemplate="<b>%{label}</b><br>Valor: R$ %{value:,.2f}<extra></extra>",
-            )
-
-            # Exibe no Streamlit
-            st.plotly_chart(fig_treemap, use_container_width=True)
-
-
-
-
-
-
-
-
-        # -------------------------------------------------------------------
+               # -------------------------------------------------------------------
             # Mostrar tabela com dados utilizados
             st.caption("📄 **Dados utilizados no gráfico:**")
             st.dataframe(df_grouped, use_container_width=True)
@@ -877,15 +907,84 @@ with tab3:
         st.plotly_chart(fig, use_container_width=True)
 
 
-
-
-
-
-
-
-
         
         st.markdown("---")
+
+
+    # ESPAÇO PARA GRÁFICO 5.1
+        st.subheader("📈 Gráfico 5.1: Serviço Mensal por Diretoria")
+        # ===============================
+
+
+       
+
+        df_nf_srv = data['nf_de_servico'].copy()
+
+        if df_nf_srv.empty:
+            st.warning("📝 Dados de NF de Serviço não disponíveis")
+        else:
+            # Meses no padrão do Excel
+            meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN',
+                    'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+
+            meses_existentes = [m for m in meses if m in df_nf_srv.columns]
+
+            if not meses_existentes:
+                st.error("❌ Colunas mensais (JAN–DEZ) não encontradas")
+            else:
+                # Aplicar filtro de diretoria
+                df_nf_srv = aplicar_filtros(df_nf_srv, 'DIRETORIA', diretoria_selecionada)
+
+                # 🔄 Transformar meses em linhas
+                df_long_srv = df_nf_srv.melt(
+                    id_vars=['DIRETORIA'],
+                    value_vars=meses_existentes,
+                    var_name='MES',
+                    value_name='VALOR'
+                ).dropna(subset=['VALOR'])
+
+                # Gráfico de linha por diretoria (curvas)
+                fig_srv = px.line(
+                    df_long_srv,
+                    x='MES',
+                    y='VALOR',
+                    color='DIRETORIA',
+                    markers=True,
+                    line_shape="spline",
+                    title="Evolução Mensal dos Gastos com Serviços",
+                    labels={
+                        'MES': 'Mês',
+                        'VALOR': 'Valor (R$)',
+                        'DIRETORIA': 'Diretoria'
+                    }
+                )
+
+                # 🎯 Forçar ordem correta dos meses
+                fig_srv.update_xaxes(
+                    categoryorder='array',
+                    categoryarray=meses
+                )
+
+                fig_srv.update_layout(
+                    template="simple_white",
+                    height=450,
+                    hovermode="x unified",
+                    yaxis_tickformat="~s",
+                    legend_title_text="Diretorias"
+                )
+
+                fig_srv.update_traces(
+                    line=dict(width=3, shape="spline"),
+                    marker=dict(size=7)
+                )
+
+                st.plotly_chart(fig_srv, use_container_width=True)
+
+
+
+
+        st.markdown("---")
+
         
         # Tabela de dados de serviços
         st.subheader("📋 Dados Detalhados de Serviços")
