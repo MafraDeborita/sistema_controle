@@ -1050,23 +1050,24 @@ with tab4:
 
     # Tabela de Itens Não Planejados
     st.subheader("📋 Itens Não Planejados")
+    st.markdown("Ocultado")
     
-    if data['nao_planejado'].empty:
-        st.warning("📝 Dados de itens não planejados não disponíveis")
-    else:
-        nao_planejado_filtrado = aplicar_filtros(data['nao_planejado'], 'diretoria', diretoria_selecionada)
+    # if data['nao_planejado'].empty:
+    #     st.warning("📝 Dados de itens não planejados não disponíveis")
+    # else:
+    #     nao_planejado_filtrado = aplicar_filtros(data['nao_planejado'], 'diretoria', diretoria_selecionada)
         
-        if nao_planejado_filtrado.empty:
-            st.warning("📊 Nenhum item não planejado para os filtros selecionados")
-        else:
-            tabela_exibicao = nao_planejado_filtrado[[
-                'diretoria', 'fornecedor', 'descricao', 'quantidade', 
-                'mes_compra', 'valor_total', 'situacao'
-            ]].copy()
+    #     if nao_planejado_filtrado.empty:
+    #         st.warning("📊 Nenhum item não planejado para os filtros selecionados")
+    #     else:
+    #         tabela_exibicao = nao_planejado_filtrado[[
+    #             'diretoria', 'fornecedor', 'descricao', 'quantidade', 
+    #             'mes_compra', 'valor_total', 'situacao'
+    #         ]].copy()
             
-            tabela_exibicao['valor_total'] = tabela_exibicao['valor_total'].apply(lambda x: f'R$ {x:,.2f}')
+    #         tabela_exibicao['valor_total'] = tabela_exibicao['valor_total'].apply(lambda x: f'R$ {x:,.2f}')
             
-            st.dataframe(tabela_exibicao, use_container_width=True)
+    #         st.dataframe(tabela_exibicao, use_container_width=True)
     
     st.markdown("---")
     
