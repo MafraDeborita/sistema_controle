@@ -18,7 +18,7 @@ st.markdown(""" ⚠️ Aviso Importante
 
 Este projeto utiliza dados públicos disponibilizados por órgão governamental, conforme previsto em lei de transparência.
 Não há tratamento de dados pessoais em desacordo com a LGPD.
-A finalidade é acadêmica e de estudo, sem uso comercial. """
+A finalidade é acadêmica e de estudo, sem uso comercial. """)
 
 
 # Logo no topo centralizado
