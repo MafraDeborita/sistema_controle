@@ -1229,4 +1229,4 @@ st.sidebar.info(f"Os dados foram atualizados em: **{datetime.now().strftime('%d/
 
 # Rodapé
 st.markdown("---")
-st.markdown("**Dashboard de Compras e Serviços** - Desenvolvido por GESL e GESLC para acompanhamento orçamentário")
+st.markdown("**2025**")
