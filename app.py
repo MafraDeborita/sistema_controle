@@ -1208,17 +1208,17 @@ abas_carregadas = sum(1 for df in data.values() if not df.empty)
 st.sidebar.info(f"**{abas_carregadas} de {len(data)} abas** carregadas com sucesso")
 
 # Informações sobre os gráficos
-st.sidebar.header("🛠️ 👥 Responsáveis")
+st.sidebar.header("projeto")
 st.sidebar.info("""
-**GESL, GESLC:**
+**dados:**
 
-- **Desenvolvimento:**
-- **GESL** - Gerência de Suprimentos e Logistica
-- **GESLC** - Cordenadoria de Compras
-- **Dados:** Radar de Aquisições e Serviços 
 - **Contato:** coord.compras@caema.ma.gov.br
 
+**st.markdown(""" ⚠️ Aviso Importante
 
+Este projeto utiliza dados públicos disponibilizados por órgão governamental, conforme previsto em lei de transparência.
+Não há tratamento de dados pessoais em desacordo com a LGPD.
+A finalidade é acadêmica e de estudo, sem uso comercial. """)**
 
 """)
 st.sidebar.header("📅 Última Atualização")
