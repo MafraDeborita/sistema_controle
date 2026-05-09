@@ -14,6 +14,13 @@ st.set_page_config(
     page_icon="icon/tendencia.png"
 )
 
+st.markdown(""" ⚠️ Aviso Importante
+
+Este projeto utiliza dados públicos disponibilizados por órgão governamental, conforme previsto em lei de transparência.
+Não há tratamento de dados pessoais em desacordo com a LGPD.
+A finalidade é acadêmica e de estudo, sem uso comercial. """
+
+
 # Logo no topo centralizado
 # Caminho absoluto para garantir que o arquivo seja encontrado
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -1212,13 +1219,9 @@ st.sidebar.header("projeto")
 st.sidebar.info("""
 **dados:**
 
-- **Contato:** coord.compras@caema.ma.gov.br
+- **Contato:** mafradebora26@gmail.com
 
-**st.markdown(""" ⚠️ Aviso Importante
-
-Este projeto utiliza dados públicos disponibilizados por órgão governamental, conforme previsto em lei de transparência.
-Não há tratamento de dados pessoais em desacordo com a LGPD.
-A finalidade é acadêmica e de estudo, sem uso comercial. """)**
+)
 
 """)
 st.sidebar.header("📅 Última Atualização")
