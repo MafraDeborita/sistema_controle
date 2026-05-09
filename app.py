@@ -24,7 +24,7 @@ A finalidade é acadêmica e de estudo, sem uso comercial. """)
 # Logo no topo centralizado
 # Caminho absoluto para garantir que o arquivo seja encontrado
 current_dir = os.path.dirname(os.path.abspath(__file__))
-logo_path = os.path.join(current_dir, "icon", "imagem_caema.png")
+logo_path = os.path.join(current_dir, "icon", "image.png")
 
 # Linha de topo com a logo à direita
 # top = st.columns([1, 1, 1])  # ajuste a proporção conforme desejar
